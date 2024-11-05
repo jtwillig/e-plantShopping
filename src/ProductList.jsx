@@ -10,16 +10,12 @@ function ProductList() {
     
     const dispatch = useDispatch();
 
-    const [addedToCart, setAddedToCart] = useState({});
     const handleAddToCart = (product) => {
         dispatch(addItem(product));
-        setAddedToCart((prevState) => ({
-           ...prevState,
-           [product.name]: true, 
-         }));
       };
 
     const totalQuantity = useSelector(state => state.cart.totalQuantity);
+    const cartItems = useSelector(state => state.cart.items).reduce((a, i) => ({ ...a, [i.name]: true }), {});
 
     const plantsArray = [
         {
@@ -300,7 +296,7 @@ function ProductList() {
                                         <div className="product-price">{plant.cost}</div>
                                         <div className="product-description">{plant.description}</div>
                                         {/*Similarly like the above plant.name show other details like description and cost*/}
-                                        <button className="product-button" onClick={() => handleAddToCart(plant)} disabled={!!addedToCart[plant.name]} style={!!addedToCart[plant.name] ? {backgroundColor: 'gray'} : null}>{addedToCart[plant.name] ? 'Added to Cart' : 'Add to Cart'}</button>
+                                        <button className="product-button" onClick={() => handleAddToCart(plant)} disabled={cartItems[plant.name]} style={cartItems[plant.name] ? {backgroundColor: 'gray'} : null}>{cartItems[plant.name] ? 'Added to Cart' : 'Add to Cart'}</button>
                                     </div>
                                 ))}
                             </div>
